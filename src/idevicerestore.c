@@ -82,7 +82,7 @@ static struct option longopts[] = {
 void usage(int argc, char* argv[]) {
 	char* name = strrchr(argv[0], '/');
 	printf("Usage: %s [OPTIONS] FILE\n", (name ? name + 1 : argv[0]));
-	printf("Restore IPSW firmware FILE to an iOS device.\n\n");
+	printf("Restore iPSW firmware FILE to an iOS device.\n\n");
 	printf("  -i, --ecid ECID\ttarget specific device by its hexadecimal ECID\n");
 	printf("                 \te.g. 0xaabb123456 or 00000012AABBCCDD\n");
 	printf("  -u, --udid UDID\ttarget specific device by its 40-digit device UDID\n");
@@ -90,26 +90,27 @@ void usage(int argc, char* argv[]) {
 	printf("  -d, --debug\t\tenable communication debugging\n");
 	printf("  -h, --help\t\tprints usage information\n");
 	printf("  -e, --erase\t\tperform a full restore, erasing all data (defaults to update)\n");
-	printf("  -c, --custom\t\trestore with a custom firmware\n");
+	printf("  -c, --custom\t\trestore with a custom firmware (for limera1n devices only)\n");
 	printf("  -l, --latest\t\tuse latest available firmware (with download on demand)\n");
-	printf("              \t\tDO NOT USE if you need to preserve the baseband (unlock)!\n");
 	printf("              \t\tUSE WITH CARE if you want to keep a jailbreakable firmware!\n");
 	printf("              \t\tThe FILE argument is ignored when using this option.\n");
-	printf("  -s, --cydia\t\tuse Cydia's signature service instead of Apple's\n");
-	printf("  -x, --exclude\t\texclude nor/baseband upgrade\n");
+	printf("  -s, --cydia\t\tuse Cydia's signature service instead of Apple's (use with -t)\n");
+	printf("  -x, --exclude\t\texclude NOR/baseband upgrade\n");
 	printf("  -t, --shsh\t\tfetch TSS record and save to .shsh file, then exit\n");
 	printf("  -k, --keep-pers\twrite personalized components to files for debugging\n");
-	printf("  -p, --pwn\t\tput device in pwned DFU mode and exit (limera1n devices only)\n");
+    printf("  -p, --pwn\t\tput device in pwned DFU mode and exit (limera1n devices only).\n");
+    printf("           \t\tNOT compatible with virtual machines.\n");
 	printf("  -n, --no-action\tDo not perform any restore action. If combined with -l option\n");
-	printf("                 \tthe on demand ipsw download is performed before exiting.\n");
-	printf("  -w, --downgrade\tdowngrade with a custom firmware\n");
+	printf("                 \tthe on demand iPSW download is performed before exiting.\n");
+	printf("  -w, --downgrade\tDowngrading 32-bit devices with Odysseus (kDFU) method\n");
 	printf("  -C, --cache-path DIR\tUse specified directory for caching extracted\n");
     printf("                      \tor other reused files.\n");
-    printf("  -o, --otamanifest BuildManifest.plist\tspecify ota BuildManifest to\n");
-    printf("                 \tsign bootfiles with a different apticket\n");
-    printf("  -b, --boot\t\tjust boot tethered\n");
+    printf("  -o, --otamanifest \tSpecify OTA BuildManifest.plist to sign bootfiles with\n");
+    printf("                    \ta different APTicket\n");
+    printf("  -b, --boot\t\tjust boot tethered (limera1n devices only)\n");
+    printf("            \t\tNOT compatible with virtual machines.\n");
     printf("      --nobootx\t\tdoes not run \"bootx\" command\n");
-    printf("  -g, --paniclog\tboot restore ramdisk, print paniclog (if available) and reboot\n");
+    printf("  -g, --paniclog\tboot restore RAMDisk, print paniclog (if available) and reboot\n");
 	printf("\n");
     printf("Homepage: <" PACKAGE_URL ">\n");
 }

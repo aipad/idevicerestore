@@ -1,18 +1,12 @@
 About
 =====
 
-The idevicerestore tool allows to restore firmware files to iOS devices.
+The idevicerestore tool allows to restore firmware files to iOS devices. It is a full reimplementation of all granular steps which are performed during restore of a firmware to a device.
 
-It is a full reimplementation of all granular steps which are performed during
-restore of a firmware to a device.
+In general, upgrades and downgrades are possible, however subject to availability of SHSH blobs from Apple for signing the firmware files.
 
-In general, upgrades and downgrades are possible, however subject to
-availability of SHSH blobs from Apple for signing the firmare files.
-
-To restore a device to some firmware, simply run the following:
-$ sudo idevicerestore -l
-
-This will download and restore a device to the latest firmware available.
+This fork created for Odysseus support (https://dayt0n.com/articles/Odysseus) for 32-bit devices with latest depends. Use this command for downgrade:
+$ sudo idevicerestore -w
 
 Requirements
 ============
@@ -24,6 +18,7 @@ Development Packages of:
 	libplist
 	libzip
 	openssl
+        zlib
 
 Software:
 	usbmuxd
@@ -33,7 +28,6 @@ Software:
 	autoconf
 	libtool
 	pkg-config
-	gcc
 
 Installation
 ============
@@ -68,8 +62,9 @@ Credits
 =======
 
 Apple, iPhone, iPod, and iPod Touch are trademarks of Apple Inc.
-idevicerestore is an independent software tool and has not been
-authorized, sponsored, or otherwise approved by Apple Inc.
+idevicerestore is an independent software tool and has not been authorized, sponsored, or otherwise approved by Apple Inc.
+
+Thanks encounter (https://github.com/encounter) & tihmstar (https://twitter.com/tihmstar) for support latest macOS versions (10.12, 10.13, 10.14).
 
 README Updated on:
-	2015-10-06
+	2018-10-26

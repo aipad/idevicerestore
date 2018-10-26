@@ -6,6 +6,7 @@ AM_CFLAGS =	                   \
 	$(libplist_CFLAGS)         \
 	$(libzip_CFLAGS)           \
 	$(openssl_CFLAGS)          \
+        $(zlib_CFLAGS)             \
 	$(libcurl_CFLAGS)
 
 AM_LDFLAGS =\
@@ -15,6 +16,7 @@ AM_LDFLAGS =\
 	$(libplist_LIBS)           \
 	$(libzip_LIBS)             \
 	$(openssl_LIBS)            \
+        $(zlib_LIBS)               \
 	$(libcurl_LIBS)
 
 AM_LDADD = $(AC_LDADD)
