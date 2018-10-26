@@ -1826,15 +1826,19 @@ plist_t restore_get_se_firmware_data(restored_client_t restore, struct idevicere
 	plist_t request = NULL;
 	plist_t response = NULL;
 	int ret;
-
-	if (build_identity_has_component(build_identity, "SE,Firmware")) {
-		comp_name = "SE,Firmware";
-	} else if (build_identity_has_component(build_identity, "SE,UpdatePayload")) {
-		comp_name = "SE,UpdatePayload";
-	} else {
-		error("ERROR: Neither 'SE,Firmware' nor 'SE,UpdatePayload' found in build identity.\n");
-		return NULL;
-	}
+    uint64_t chip_id = 0;
+    plist_t node = plist_dict_get_item(p_info, "SE,ChipID");
+    if (node && plist_get_node_type(node) == PLIST_UINT) {
+        plist_get_uint_val(node, &chip_id);
+    }
+    if (chip_id == 0x20211) {
+        comp_name = "SE,Firmware";
+    } else if (chip_id == 0x73) {
+        comp_name = "SE,UpdatePayload";
+    } else {
+        error("ERROR: Neither 'SE,Firmware' nor 'SE,UpdatePayload' found in build identity.\n");
+        return NULL;
+    }
 
 	if (build_identity_get_component_path(build_identity, comp_name, &comp_path) < 0) {
 		error("ERROR: Unable get path for '%s' component\n", comp_name);
@@ -2426,6 +2430,10 @@ int restore_device(struct idevicerestore_client_t* client, plist_t build_identit
 		else if (!strcmp(type, "StatusMsg")) {
 			err = restore_handle_status_msg(restore, message);
 			if (restore_finished) {
+                plist_t dict = plist_new_dict();
+                plist_dict_set_item(dict, "MsgType", plist_new_string("ReceivedFinalStatusMsg"));
+                restored_send(restore, dict);
+                plist_free(dict);
 				client->flags |= FLAG_QUIT;
 			}
 		}
