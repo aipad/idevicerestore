@@ -32,17 +32,29 @@
 
 int limera1n_is_supported(struct irecv_device *device)
 {
-	irecv_device_t iphone4 = NULL;
+	irecv_device_t iphone4GSM = NULL;
+    irecv_device_t iphone4GSMa = NULL;
+    irecv_device_t iphone4CDMA = NULL;
 	irecv_device_t iphone3gs = NULL;
 	irecv_device_t ipod3g = NULL;
+    irecv_device_t ipod4g = NULL;
+    irecv_device_t ipad = NULL;
 
-	irecv_devices_get_device_by_product_type("iPhone3,1", &iphone4);
+	irecv_devices_get_device_by_product_type("iPhone3,1", &iphone4GSM);
+    irecv_devices_get_device_by_product_type("iPhone3,2", &iphone4GSMa);
+    irecv_devices_get_device_by_product_type("iPhone3,3", &iphone4CDMA);
 	irecv_devices_get_device_by_product_type("iPhone2,1", &iphone3gs);
 	irecv_devices_get_device_by_product_type("iPod3,1", &ipod3g);
+    irecv_devices_get_device_by_product_type("iPod4,1", &ipod4g);
+    irecv_devices_get_device_by_product_type("iPad1,1", &ipad);
 
-	return ((device->chip_id == iphone4->chip_id) ||
+	return ((device->chip_id == iphone4GSM->chip_id) ||
+            (device->chip_id == iphone4GSMa->chip_id) ||
+            (device->chip_id == iphone4CDMA->chip_id) ||
 			(device->chip_id == iphone3gs->chip_id) ||
-			(device->chip_id == ipod3g->chip_id));
+			(device->chip_id == ipod3g->chip_id) ||
+            (device->chip_id == ipod4g->chip_id) ||
+            (device->chip_id == ipad->chip_id));
 }
 
 int limera1n_exploit(struct irecv_device *device, irecv_client_t *pclient)
@@ -56,19 +68,35 @@ int limera1n_exploit(struct irecv_device *device, irecv_client_t *pclient)
 	unsigned int stack_address = 0;
 	unsigned int shellcode_address = 0;
 
-	irecv_device_t iphone4 = NULL;
-	irecv_device_t iphone3gs = NULL;
-	irecv_device_t ipod3g = NULL;
+    irecv_device_t iphone4GSM = NULL;
+    irecv_device_t iphone4GSMa = NULL;
+    irecv_device_t iphone4CDMA = NULL;
+    irecv_device_t iphone3gs = NULL;
+    irecv_device_t ipod3g = NULL;
+    irecv_device_t ipod4g = NULL;
+    irecv_device_t ipad = NULL;
 	int mode = 0;
 
-	irecv_devices_get_device_by_product_type("iPhone3,1", &iphone4);
-	irecv_devices_get_device_by_product_type("iPhone2,1", &iphone3gs);
-	irecv_devices_get_device_by_product_type("iPod3,1", &ipod3g);
+    irecv_devices_get_device_by_product_type("iPhone3,1", &iphone4GSM);
+    irecv_devices_get_device_by_product_type("iPhone3,2", &iphone4GSMa);
+    irecv_devices_get_device_by_product_type("iPhone3,3", &iphone4CDMA);
+    irecv_devices_get_device_by_product_type("iPhone2,1", &iphone3gs);
+    irecv_devices_get_device_by_product_type("iPod3,1", &ipod3g);
+    irecv_devices_get_device_by_product_type("iPod4,1", &ipod4g);
+    irecv_devices_get_device_by_product_type("iPad1,1", &ipad);
 
-	if (device->chip_id == iphone4->chip_id) {
+	if (device->chip_id == iphone4GSM->chip_id) {
 		max_size = 0x2C000;
 		stack_address = 0x8403BF9C;
 		shellcode_address = 0x8402B001;
+    } else if (device->chip_id == iphone4GSMa->chip_id) {
+        max_size = 0x2C000;
+        stack_address = 0x8403BF9C;
+        shellcode_address = 0x8402B001;
+    } else if (device->chip_id == iphone4CDMA->chip_id) {
+        max_size = 0x2C000;
+        stack_address = 0x8403BF9C;
+        shellcode_address = 0x8402B001;
 	} else if (device->chip_id == iphone3gs->chip_id) {
 		max_size = 0x24000;
 		stack_address = 0x84033FA4;
@@ -76,7 +104,15 @@ int limera1n_exploit(struct irecv_device *device, irecv_client_t *pclient)
 	} else if (device->chip_id == ipod3g->chip_id) {
 		max_size = 0x24000;
 		stack_address = 0x84033F98;
-		shellcode_address = 0x84023001;	
+		shellcode_address = 0x84023001;
+    } else if (device->chip_id == ipod4g->chip_id) {
+        max_size = 0x2C000;
+        stack_address = 0x8403BF9C;
+        shellcode_address = 0x8402B001;
+    } else if (device->chip_id == ipad->chip_id) {
+        max_size = 0x2C000;
+        stack_address = 0x8403BF9C;
+        shellcode_address = 0x8402B001;
 	} else {
 		error("Unsupported ChipID 0x%04x. Can't exploit with limera1n.\n", device->chip_id);
 		return -1;
